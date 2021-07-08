@@ -13,6 +13,16 @@ class SharedViewModel(app: Application): AndroidViewModel(app) {
     // We have the MutableLiveData data passed through to this from our repository
     val projectData = projectRepo.projectData
 
+    var newProject: Project? = null
+
     // This is the selected project which the user clicked on.
     val selectedProject = MutableLiveData<Project>()
+
+    fun addProject(project: Project) {
+        projectRepo.addProject(project)
+    }
+
+    fun refreshProjectData() {
+        projectRepo.refreshProjectData()
+    }
 }

@@ -10,4 +10,13 @@
         android:name="com.jre.projectcounter.ui.main.MainFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_main"/>
+    <fragment
+        android:id="@+id/addProjectFragment"
+        android:name="com.jre.projectcounter.ui.add.AddProjectFragment"
+        android:label="fragment_add_project"
+        tools:layout="@layout/fragment_add_project" >
+        <action
+            android:id="@+id/action_add_new_project"
+            app:destination="@id/MainFragment" />
+    </fragment>
 </navigation>
