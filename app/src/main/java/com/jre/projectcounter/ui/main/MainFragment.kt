@@ -1,23 +1,22 @@
 package com.jre.projectcounter.ui.main
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
-import com.jre.projectcounter.LOG_TAG
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jre.projectcounter.PREF_RECYCLER_VIEW_GRID
+import com.jre.projectcounter.PREF_RECYCLER_VIEW_LIST
 import com.jre.projectcounter.R
 import com.jre.projectcounter.data.entities.Project
 import com.jre.projectcounter.databinding.FragmentMainBinding
 import com.jre.projectcounter.ui.lifecycle.MainFragmentLifecycleObserver
 import com.jre.projectcounter.ui.shared.SharedViewModel
+import com.jre.projectcounter.utils.PrefsHelper
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -27,6 +26,8 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
     private val viewModel by lazy { ViewModelProvider(requireActivity()).get(SharedViewModel::class.java) }
     /// Allows us to navigate our app in a clean and concise way.
     private val navController by lazy { Navigation.findNavController(requireActivity(), R.id.nav_host)}
+
+    private lateinit var mainRecyclerAdapter: MainRecyclerAdapter
 
     private var _binding: FragmentMainBinding? = null
 
@@ -40,15 +41,21 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
     ): View {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).setSupportActionBar(binding.mfToolbar)
 
         lifecycle.addObserver(MainFragmentLifecycleObserver())
 
+        initRVLayoutManager()
+
         viewModel.projectData.observe(viewLifecycleOwner, {
-            val adapter = MainRecyclerAdapter(requireContext(), it, this)
-            binding.projectRecyclerView.adapter = adapter
+            mainRecyclerAdapter = MainRecyclerAdapter(requireContext(), it, this)
+            binding.projectRecyclerView.adapter = mainRecyclerAdapter
         })
 
         binding.mfFabAddProject.setOnClickListener { navController.navigate(R.id.addProjectFragment)}
+
+
 
         return binding.root
 
@@ -71,6 +78,91 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
             requireContext(),
             "Project ${project.projectName} clicked.",
             Toast.LENGTH_LONG).show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        if(PrefsHelper.getItemType(
+                requireContext(),
+                MainRecyclerAdapter.PREF_MRA_RV_VIEW_KEY
+            ) == MainRecyclerAdapter.PREF_MRA_RECYCLER_VIEW_LIST) {
+            menu.findItem(R.id.recycler_view_toggle_list).isVisible = false
+            menu.findItem(R.id.recycler_view_toggle_grid).isVisible = true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when(item.itemId) {
+            R.id.recycler_view_toggle_list -> {
+                onOptionListViewClick()
+            }
+            R.id.recycler_view_toggle_grid -> {
+                onOptionGridViewClick()
+            }
+            R.id.action_settings -> {
+                onOptionSettingsClick()
+            }
+        }
+
+        return true
+    }
+
+    /** Initialises our [RecyclerView] Layout Manager depending on whether the user tapped
+     * the option for GridLayout or LinearLayout.
+     */
+    private fun initRVLayoutManager() {
+        // Get the RecyclerView View key and if it matches Grid then assign our RecyclerView
+        // LayoutManager to be GridLayoutManager otherwise set to LinearLayoutManager.
+        if(PrefsHelper.getItemType(
+                requireContext(),
+                MainRecyclerAdapter.PREF_MRA_RV_VIEW_KEY
+            ) == MainRecyclerAdapter.PREF_MRA_RECYCLER_VIEW_GRID) {
+            binding.projectRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        } else {
+            binding.projectRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    /** What we need to do once our List View Menu Option is tapped by the user */
+    private fun onOptionListViewClick() {
+        // Sets our Preference to the List View so that the next time the user opens the app
+        // We assign the correct layout manager.
+        PrefsHelper.setItemType(
+            requireContext(),
+            MainRecyclerAdapter.PREF_MRA_RV_VIEW_KEY,
+            MainRecyclerAdapter.PREF_MRA_RECYCLER_VIEW_LIST
+        )
+
+        // Enable the correct option item and disable the incorrect one.
+        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_list).isVisible = false
+        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_grid).isVisible = true
+        binding.projectRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        // Reassign the adapter so it refreshes our RecyclerView.
+        binding.projectRecyclerView.adapter = mainRecyclerAdapter
+    }
+
+    /** What we need to do once our Grid View Menu Option is tapped by the user. */
+    private fun onOptionGridViewClick() {
+        PrefsHelper.setItemType(
+            requireContext(),
+            MainRecyclerAdapter.PREF_MRA_RV_VIEW_KEY,
+            MainRecyclerAdapter.PREF_MRA_RECYCLER_VIEW_GRID
+        )
+
+        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_grid).isVisible = false
+        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_list).isVisible = true
+        binding.projectRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.projectRecyclerView.adapter = mainRecyclerAdapter
+    }
+
+    private fun onOptionSettingsClick() {
+        TODO("Implement this when ready")
     }
 
     override fun onDestroyView() {

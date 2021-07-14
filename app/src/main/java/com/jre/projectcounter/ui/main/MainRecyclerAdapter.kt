@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.jre.projectcounter.PREF_RECYCLER_VIEW_GRID
 import com.jre.projectcounter.R
 import com.jre.projectcounter.data.entities.Project
+import com.jre.projectcounter.utils.PrefsHelper
 
 /** The adapter that our main [RecyclerView] uses to display our [Project] items.
  * @param context The context our fragment is associated with
@@ -25,9 +27,18 @@ class MainRecyclerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layoutSelected = PrefsHelper.getItemType(
+            parent.context,
+            PREF_MRA_RV_VIEW_KEY
+        )
+        val layoutId = if(layoutSelected == PREF_RECYCLER_VIEW_GRID) {
+            R.layout.project_grid_item
+        } else {
+            R.layout.project_list_item
+        }
         return ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.project_grid_item, parent, false)
+                .inflate(layoutId, parent, false)
         )
     }
 
@@ -50,5 +61,11 @@ class MainRecyclerAdapter(
          * @param project The [Project] item which the user clicks on
          */
         fun onProjectItemClick(project: Project)
+    }
+
+    companion object {
+        const val PREF_MRA_RV_VIEW_KEY = "mra_rv_view"
+        const val PREF_MRA_RECYCLER_VIEW_GRID = "grid"
+        const val PREF_MRA_RECYCLER_VIEW_LIST = "list"
     }
 }

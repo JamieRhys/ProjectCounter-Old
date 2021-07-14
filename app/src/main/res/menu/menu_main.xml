@@ -3,8 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.jre.projectcounter.ui.main.MainActivity">
     <item
+        android:id="@+id/recycler_view_toggle_list"
+        android:icon="@drawable/ic_view_list"
+        android:title="@string/list_view"
+        android:visible="true"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/recycler_view_toggle_grid"
+        android:icon="@drawable/ic_view_grid"
+        android:title="@string/grid_view"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Settings"
         app:showAsAction="never" />
 </menu>

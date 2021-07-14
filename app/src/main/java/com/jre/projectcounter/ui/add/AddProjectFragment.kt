@@ -1,8 +1,11 @@
 package com.jre.projectcounter.ui.add
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -39,6 +42,12 @@ class AddProjectFragment : Fragment() {
     }
 
     private fun initUiComponents() {
+        binding.apfToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        binding.apfToolbar.setNavigationOnClickListener {
+            displayCancelDialogIfProjectNameNotEmptyOrNavUp()
+        }
+
+
         // Start with our Add button.
         binding.buttonAdd.setOnClickListener {
             // If the ProjectName EditText is not empty then we'll add it to our database so the user
@@ -62,16 +71,16 @@ class AddProjectFragment : Fragment() {
         }
 
         binding.buttonCancel.setOnClickListener {
-            if(binding.etProjectName.text.toString().isNotEmpty()) {
-                // TODO: Ask the user if they truly wish to close the fragment down with a dialog
-                CancelDialogFragment().show(childFragmentManager, CANCEL_DIALOG_FRAGMENT)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Cancel Button Tapped.",
-                    Toast.LENGTH_LONG).show()
-                navController.navigateUp()
-            }
+            displayCancelDialogIfProjectNameNotEmptyOrNavUp()
+        }
+    }
+
+    // Yes I know this is a long function name but it's descriptive no?
+    private fun displayCancelDialogIfProjectNameNotEmptyOrNavUp() {
+        if(binding.etProjectName.text.toString().isNotEmpty()) {
+            CancelDialogFragment().show(childFragmentManager, CANCEL_DIALOG_FRAGMENT)
+        } else {
+            navController.navigateUp()
         }
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectCounter</string>
+    <string name="app_name">Project Counter</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -11,4 +11,21 @@
     <string name="cancel_dialog">Are you sure you wish to cancel?</string>
     <string name="ok">OK</string>
     <string name="back">Back</string>
+    <!-- Preference Titles -->
+    <string name="general_header">General</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- General Preferences -->
+    <string name="add_example_project_title">Add Example Project</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="main_fragment">main_fragment</string>
+    <string name="grid_view">Grid View</string>
+    <string name="list_view">List View</string>
 </resources>
