@@ -4,7 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.jre.projectcounter.LOG_TAG
+import com.jre.projectcounter.data.data.ProjectWithCounters
 import com.jre.projectcounter.data.database.ProjectDatabase
+import com.jre.projectcounter.data.entities.Counter
 import com.jre.projectcounter.data.entities.Project
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +21,12 @@ import kotlinx.coroutines.withContext
 class ProjectRepository(app: Application) {
     // The data we've collected is exposed through this MutableLiveData variable.
     val projectData = MutableLiveData<List<Project>>()
+    val projectsWithCounters = MutableLiveData<List<ProjectWithCounters>>()
 
     // We get the dao object from our ProjectDatabase.
     private val projectDao = ProjectDatabase.getDatabase(app).projectDao()
+
+    private val counterDao = ProjectDatabase.getDatabase(app).counterDao()
 
     init {
         // This is done in the background IO thread to prevent the UI from being locked up
@@ -73,5 +78,32 @@ class ProjectRepository(app: Application) {
         val project = Project(projectName = "Example Project")
         projectDao.insertProject(project)
         projectData.postValue(projectDao.getAll())
+
+        var counter =
+            projectDao.getAll()[0].projectId?.let {
+                Counter(
+                    counterName = "Counter 1",
+                    projectId = it
+                )
+            }
+
+        if (counter != null) {
+            counterDao.insertCounter(counter)
+        }
+
+        counter =
+                projectDao.getAll()[0].projectId?.let {
+                    Counter(
+                        counterName = "Counter 2",
+                        projectId = it
+                    )
+                }
+
+        if(counter != null) {
+            counterDao.insertCounter(counter)
+        }
+
+        // TODO: Remove after successful:
+        projectsWithCounters.postValue(projectDao.getProjectWithCounters())
     }
 }

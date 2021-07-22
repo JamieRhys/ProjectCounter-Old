@@ -80,10 +80,6 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
             Toast.LENGTH_LONG).show()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
 
@@ -162,7 +158,7 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
     }
 
     private fun onOptionSettingsClick() {
-        TODO("Implement this when ready")
+        navController.navigate(R.id.settingsFragment)
     }
 
     override fun onDestroyView() {

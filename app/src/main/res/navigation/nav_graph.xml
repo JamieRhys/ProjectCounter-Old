@@ -9,7 +9,11 @@
         android:id="@+id/MainFragment"
         android:name="com.jre.projectcounter.ui.main.MainFragment"
         android:label="@string/main_fragment"
-        tools:layout="@layout/fragment_main"/>
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_MainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addProjectFragment"
         android:name="com.jre.projectcounter.ui.add.AddProjectFragment"
@@ -18,5 +22,20 @@
         <action
             android:id="@+id/action_add_new_project"
             app:destination="@id/MainFragment" />
+        <action
+            android:id="@+id/action_nav_to_cancel_dialog"
+            app:destination="@id/cancelDialogFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/cancelDialogFragment"
+        android:name="com.jre.projectcounter.ui.dialogs.CancelDialogFragment"
+        android:label="CancelDialogFragment" >
+        <action
+            android:id="@+id/action_nav_to_main_fragment_from_cancel_dialog"
+            app:destination="@id/MainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.jre.projectcounter.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

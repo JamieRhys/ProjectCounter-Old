@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "table_projects")
 class Project(
-    @PrimaryKey(autoGenerate = true) var id: Long? = null,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "project_id") var projectId: Long? = null,
     @ColumnInfo(name = "project_name") var projectName: String
 ) {
 }
