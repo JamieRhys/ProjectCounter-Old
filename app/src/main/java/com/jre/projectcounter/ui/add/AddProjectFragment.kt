@@ -1,9 +1,7 @@
 package com.jre.projectcounter.ui.add
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -33,6 +31,7 @@ class AddProjectFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddProjectBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
 
         // Initialise our UI components so we can use them
         initUiComponents()
@@ -41,13 +40,15 @@ class AddProjectFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_new_project)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     private fun initUiComponents() {
-        binding.apfToolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-        binding.apfToolbar.setNavigationOnClickListener {
-            displayCancelDialogIfProjectNameNotEmptyOrNavUp()
-        }
-
-
         // Start with our Add button.
         binding.buttonAdd.setOnClickListener {
             // If the ProjectName EditText is not empty then we'll add it to our database so the user
@@ -75,6 +76,15 @@ class AddProjectFragment : Fragment() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+            android.R.id.home -> displayCancelDialogIfProjectNameNotEmptyOrNavUp()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     // Yes I know this is a long function name but it's descriptive no?
     private fun displayCancelDialogIfProjectNameNotEmptyOrNavUp() {
         if(binding.etProjectName.text.toString().isNotEmpty()) {
@@ -84,8 +94,14 @@ class AddProjectFragment : Fragment() {
         }
     }
 
+    private fun clearOptionsMenu() {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        clearOptionsMenu()
         _binding = null
     }
 }

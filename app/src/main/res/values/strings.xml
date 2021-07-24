@@ -7,7 +7,7 @@
     <string name="project_name">Project Name</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
-    <string name="add__new_project">Add New Project</string>
+    <string name="add_new_project">Add New Project</string>
     <string name="cancel_dialog">Are you sure you wish to cancel?</string>
     <string name="ok">OK</string>
     <string name="back">Back</string>
@@ -36,4 +36,5 @@
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
+    <string name="settings">Settings</string>
 </resources>

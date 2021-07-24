@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/mf_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_main"
-        app:title="@string/app_name"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/projectRecyclerView"
         android:layout_width="0dp"
@@ -27,7 +14,7 @@
         app:layout_constraintBottom_toTopOf="@+id/mf_fab_add_project"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mf_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:spanCount="2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -1,14 +1,18 @@
 package com.jre.projectcounter.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jre.projectcounter.LOG_TAG
 import com.jre.projectcounter.PREF_RECYCLER_VIEW_GRID
 import com.jre.projectcounter.PREF_RECYCLER_VIEW_LIST
 import com.jre.projectcounter.R
@@ -27,6 +31,9 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
     /// Allows us to navigate our app in a clean and concise way.
     private val navController by lazy { Navigation.findNavController(requireActivity(), R.id.nav_host)}
 
+    private lateinit var menuOptionList: MenuItem
+    private lateinit var menuOptionGrid: MenuItem
+
     private lateinit var mainRecyclerAdapter: MainRecyclerAdapter
 
     private var _binding: FragmentMainBinding? = null
@@ -42,7 +49,6 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        (activity as AppCompatActivity).setSupportActionBar(binding.mfToolbar)
 
         lifecycle.addObserver(MainFragmentLifecycleObserver())
 
@@ -80,6 +86,16 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
             Toast.LENGTH_LONG).show()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_main, menu)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
+        super.onCreateOptionsMenu(menu, inflater)
+
+        menuOptionList = menu.findItem(R.id.recycler_view_toggle_list)
+        menuOptionGrid = menu.findItem(R.id.recycler_view_toggle_grid)
+    }
+
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
 
@@ -89,6 +105,8 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
             ) == MainRecyclerAdapter.PREF_MRA_RECYCLER_VIEW_LIST) {
             menu.findItem(R.id.recycler_view_toggle_list).isVisible = false
             menu.findItem(R.id.recycler_view_toggle_grid).isVisible = true
+
+
         }
     }
 
@@ -135,9 +153,9 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
             MainRecyclerAdapter.PREF_MRA_RECYCLER_VIEW_LIST
         )
 
-        // Enable the correct option item and disable the incorrect one.
-        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_list).isVisible = false
-        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_grid).isVisible = true
+        menuOptionList.isVisible = false
+        menuOptionGrid.isVisible = true
+
         binding.projectRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         // Reassign the adapter so it refreshes our RecyclerView.
         binding.projectRecyclerView.adapter = mainRecyclerAdapter
@@ -151,8 +169,9 @@ class MainFragment : Fragment(), MainRecyclerAdapter.ProjectItemListener {
             MainRecyclerAdapter.PREF_MRA_RECYCLER_VIEW_GRID
         )
 
-        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_grid).isVisible = false
-        binding.mfToolbar.menu.findItem(R.id.recycler_view_toggle_list).isVisible = true
+        menuOptionGrid.isVisible = false
+        menuOptionList.isVisible = true
+
         binding.projectRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.projectRecyclerView.adapter = mainRecyclerAdapter
     }
