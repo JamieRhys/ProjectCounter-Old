@@ -55,6 +55,13 @@ class ProjectRepository(app: Application) {
         }
     }
 
+    fun deleteAllProjects() {
+        CoroutineScope(Dispatchers.IO).launch {
+            counterDao.deleteAll()
+            projectDao.deleteAll()
+        }
+    }
+
     /** Refreshes [projectData] if the size of the database has changed since last refresh
      *  @return True if data had changed and false if not.
      */

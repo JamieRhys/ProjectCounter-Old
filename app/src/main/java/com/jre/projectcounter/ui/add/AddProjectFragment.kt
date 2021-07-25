@@ -34,7 +34,7 @@ class AddProjectFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // Initialise our UI components so we can use them
-        initUiComponents()
+        initUi()
 
         // Inflate the layout for this fragment
         return binding.root
@@ -48,7 +48,9 @@ class AddProjectFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun initUiComponents() {
+    private fun initUi() {
+
+
         // Start with our Add button.
         binding.buttonAdd.setOnClickListener {
             // If the ProjectName EditText is not empty then we'll add it to our database so the user
@@ -62,12 +64,7 @@ class AddProjectFragment : Fragment() {
                 // Navigate back to our MainFragment where we will display the newly created project
                 navController.navigateUp()
             } else {
-                // If the ProjectName EditText is empty, display a Toast to notify the user we need
-                // the name before we can add it to our database.
-                Toast.makeText(
-                    requireActivity(),
-                    "Please enter the project name",
-                    Toast.LENGTH_LONG).show()
+                binding.tilProjectName.error = "Enter Project Name"
             }
         }
 

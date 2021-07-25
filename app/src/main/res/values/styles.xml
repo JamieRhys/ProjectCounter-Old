@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ProjectCounter.ContainedButton.Go" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/green</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+    <style name="ProjectCounter.ContainedButton.Danger" parent="ProjectCounter.ContainedButton.Go">
+        <item name="backgroundTint">@color/red</item>
+    </style>
+    <style name="ProjectCounter.TextInputLayout" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_margin">25dp</item>
+        <item name="boxStrokeColor">@color/box_stroke_colour</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintTextColor">@color/yellow</item>
+        <item name="android:textColorHint">@color/yellow</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+    </style>
+    <style name="ProjectCounter.TextEdit" parent="Widget.AppCompat.EditText">
+
+    </style>
+</resources>

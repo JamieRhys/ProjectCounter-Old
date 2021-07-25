@@ -25,4 +25,8 @@ class SharedViewModel(app: Application): AndroidViewModel(app) {
     fun refreshProjectData() {
         projectRepo.refreshProjectData()
     }
+
+    fun deleteAllProjects() {
+        projectRepo.deleteAllProjects()
+    }
 }

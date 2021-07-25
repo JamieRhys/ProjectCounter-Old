@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Box is focused -->
+    <item android:alpha="?attr/alpha" android:color="@color/yellow" android:state_focused="true"/>
+
+    <item android:alpha="?attr/alpha" android:color="@color/yellow" android:state_hovered="true"/>
+    <item android:alpha="?attr/alpha" android:color="@color/yellow" android:state_enabled="false"/>
+
+    <!-- Box is unfocused -->
+    <item android:alpha="?attr/alpha" android:color="@color/yellow"/>
+</selector>
