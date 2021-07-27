@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import android.view.Menu
+import androidx.core.view.ViewCompat
 import com.jre.projectcounter.R
 import com.jre.projectcounter.databinding.ActivityMainBinding
 
